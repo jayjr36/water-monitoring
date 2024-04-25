@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Quality Data</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Water Quality Monitoring</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
-        <h1 class="mb-4">Water Quality Data</h1>
-        <table class="table table-bordered">
+        <table class="table">
             <thead>
+                <tr class="text-center">Water Quality Data</tr>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Parameter</th>
-                    <th scope="col">Value</th>
-                    <th scope="col">Unit</th>
-                    <!-- Add more columns if necessary -->
+                    <th>#</th>
+                    <th>Oxygen Level</th>
+                    <th>Temperature</th>
+                    <th>Ammonia</th>
+                    <th>Timestamp</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($waterQualities as $key => $waterQuality)
+                @foreach ($waterQualities as $waterQuality)
                     <tr>
-                        <th scope="row">{{ $key + 1 }}</th>
-                        <td>{{ $waterQuality->parameter }}</td>
-                        <td>{{ $waterQuality->value }}</td>
-                        <td>{{ $waterQuality->unit }}</td>
-                        <!-- Add more columns if necessary -->
+                        <td>{{ $waterQuality->id }}</td>
+                        <td>{{ $waterQuality->oxygen_level }}</td>
+                        <td>{{ $waterQuality->temperature }}</td>
+                        <td>{{ $waterQuality->ammonia }}</td>
+                        <td>{{ $waterQuality->created_at }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            setInterval(function() {
+                $.get('/', function(data) {
+                    $('.table thead tbody').empty();
+                    $('.table thead tbody').append(data);
+                });
+            }, 3000);
+        });
+    </script>
 </body>
+
 </html>

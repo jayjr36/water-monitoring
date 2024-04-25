@@ -2,35 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WaterQuality;
 use Illuminate\Http\Request;
 
 class WaterQualityController extends Controller
 {
-    public function fetchDataAndStore()
+    public function store(Request $request)
     {
-        // Fetch data from API
-        $client = new Client();
-        $response = $client->get('https://api.example.com/water_quality');
-        $data = json_decode($response->getBody(), true);
+        $data = $request->validate([
+            'temperature' => 'required',
+            'oxygen' => 'required',
+            'amonia' => 'required',
+        ]);
 
-        // Store data in the database
-        foreach ($data as $item) {
-            WaterQuality::create([
-                'parameter' => $item['parameter'],
-                'value' => $item['value'],
-                'unit' => $item['unit'],
-                // Add other fields as necessary
-            ]);
-        }
+        WaterQuality::create([
+            'temperature' => $data['temperature'],
+            'oxygen_level' => $data['oxygen'],
+            'ammonia' => $data['amonia'],
+        ]);
 
         return response()->json(['message' => 'Data stored successfully']);
     }
 
-    public function displayData()
+    public function index()
     {
-        // Retrieve data from the database
-        $waterQualities = WaterQuality::all();
+        $waterQualities = WaterQuality::latest()->get();
 
-        return view('water_quality', compact('waterQualities'));
+        return view('water-quality', compact('waterQualities'));
     }
 }
