@@ -9,3 +9,4 @@ Route::get('/home', function () {
 
 
 Route::get('/', [WaterQualityController::class, 'index'])->name('display');
+
