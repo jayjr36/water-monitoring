@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('water_qualities', function (Blueprint $table) {
             $table->id();
-            $table->decimal('oxygen_level', 8, 2);
-            $table->decimal('temperature', 5, 2);
             $table->decimal('ammonia', 8, 2);
+            $table->decimal('oxygen_level', 8, 2);
+            $table->decimal('temperature', 8, 2);
             $table->timestamps();
         });
     }

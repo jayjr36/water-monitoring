@@ -23,11 +23,11 @@ class WaterQualityController extends Controller
 
         return response()->json(['message' => 'Data stored successfully']);
     }
-
     public function index()
-    {
-        $waterQualities = WaterQuality::latest()->get();
+{
+    $waterQualities = WaterQuality::latest()->get();
 
-        return view('water-quality', compact('waterQualities'));
-    }
+    return view('water-quality', compact('waterQualities'));
+}
+
 }
