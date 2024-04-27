@@ -9,5 +9,5 @@ class WaterQuality extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['oxygen_level', 'temperature', 'ammonia'];
+    protected $fillable = ['oxygen_level', 'temperature', 'ammonia', 'notification'];
 }

@@ -56,6 +56,11 @@
             <div class="col-md-3">
                 <div class="container">
                     <h3>Notificatins</h3>
+                    <div class="card-body">
+                        @foreach ($waterQualities as $waterQuality)
+                        {{ $waterQuality->notifications }}
+                        @endforeach
+                    </div>
                     
                 </div>
                 
@@ -73,7 +78,6 @@
         var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
         var labels = {!! json_encode($waterQualities->pluck('created_at')) !!};
     
-        // Create Oxygen Chart
         var ctxOxygen = document.getElementById('oxygenChart').getContext('2d');
         var oxygenChart = new Chart(ctxOxygen, {
             type: 'line',
@@ -97,7 +101,6 @@
             }
         });
     
-        // Create Temperature Chart
         var ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
         var temperatureChart = new Chart(ctxTemperature, {
             type: 'line',

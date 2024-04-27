@@ -10,3 +10,5 @@ Route::get('/home', function () {
 
 Route::get('/', [WaterQualityController::class, 'index'])->name('display');
 
+Route::get('/updatedata', [WaterQualityController::class, 'index'])->name('display');
+
