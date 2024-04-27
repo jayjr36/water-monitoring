@@ -13,47 +13,61 @@
 <body>
    
     <div class="container">
-        <h2>Water Quality Data</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Oxygen Level</th>
-                    <th>Temperature</th>
-                    <th>Ammonia</th>
-                    <th>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($waterQualities as $waterQuality)
-                <tr>
-                    <td>{{ $waterQuality->id }}</td>
-                    <td>{{ $waterQuality->oxygen_level }}</td>
-                    <td>{{ $waterQuality->temperature }}</td>
-                    <td>{{ $waterQuality->ammonia }}</td>
-                    <td>{{ $waterQuality->created_at }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    
-        <div class="row">
-            <div class="col-md-4">
-                <canvas id="oxygenChart" width="400" height="400"></canvas>
+        <h2 class="text-center bg-primary py-3 text-white">Water Quality Monitoring System</h2>
+        <div class="row py-5">
+            <div class="col-md-9 table-responsive">
+                <table class="table table-bordered table-group-divider table-striped">
+                    <thead>
+                        <tr>
+                            <th class="bg-primary text-white">Id</th>
+                            <th class="bg-primary text-white">Oxygen Level</th>
+                            <th class="bg-primary text-white">Temperature</th>
+                            <th class="bg-primary text-white">Ammonia</th>
+                            <th class="bg-primary text-white">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($waterQualities as $waterQuality)
+                        <tr>
+                            <td>{{ $waterQuality->id }}</td>
+                            <td>{{ $waterQuality->oxygen_level }}</td>
+                            <td>{{ $waterQuality->temperature }}</td>
+                            <td>{{ $waterQuality->ammonia }}</td>
+                            <td>{{ $waterQuality->created_at }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            
+                <div class="row">
+                    <div class="text-center py-5 font-bold fs-4">GRAPHS</div>
+                    <div class="col-md-4">
+                        <canvas id="oxygenChart" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-md-4">
+                        <canvas id="temperatureChart" width="400" height="400"></canvas>
+                    </div>
+                    <div class="col-md-4">
+                        <canvas id="ammoniaChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+
             </div>
-            <div class="col-md-4">
-                <canvas id="temperatureChart" width="400" height="400"></canvas>
-            </div>
-            <div class="col-md-4">
-                <canvas id="ammoniaChart" width="400" height="400"></canvas>
+            <div class="col-md-3">
+                <div class="container">
+                    <h3>Notificatins</h3>
+                    
+                </div>
+                
             </div>
         </div>
+       
+      
     </div>
     
     <!-- Load chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Fetch data for charts
         var oxygenLevels = {!! json_encode($waterQualities->pluck('oxygen_level')) !!};
         var temperatures = {!! json_encode($waterQualities->pluck('temperature')) !!};
         var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
