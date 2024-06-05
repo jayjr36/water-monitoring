@@ -67,7 +67,9 @@
             </div>
         </div>
        
-      
+      <div class="row">
+        <a href="{{route('download')}}" class="btn btn-secondary px-5">DOWNLOAD</a>
+      </div>
     </div>
     
     <!-- Load chart.js -->
