@@ -75,33 +75,38 @@
     <!-- Load chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        var oxygenLevels = {!! json_encode($waterQualities->pluck('oxygen_level')) !!};
-        var temperatures = {!! json_encode($waterQualities->pluck('temperature')) !!};
-        var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
-        var labels = {!! json_encode($waterQualities->pluck('created_at')) !!};
+    var oxygenLevels = {!! json_encode($waterQualities->pluck('oxygen_level')) !!};
+    var temperatures = {!! json_encode($waterQualities->pluck('temperature')) !!};
+    var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
     
-        var ctxOxygen = document.getElementById('oxygenChart').getContext('2d');
-        var oxygenChart = new Chart(ctxOxygen, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Oxygen Level',
-                    data: oxygenLevels,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
+    // Format created_at dates to standard date and time
+    var labels = {!! json_encode($waterQualities->pluck('created_at')->map(function($date) {
+        return \Carbon\Carbon::parse($date)->toDateTimeString();
+    })) !!};
+    
+    var ctxOxygen = document.getElementById('oxygenChart').getContext('2d');
+    var oxygenChart = new Chart(ctxOxygen, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Oxygen Level',
+                data: oxygenLevels,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
                 }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
             }
-        });
+        }
+    });
+
     
         var ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
         var temperatureChart = new Chart(ctxTemperature, {

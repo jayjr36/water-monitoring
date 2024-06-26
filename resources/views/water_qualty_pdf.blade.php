@@ -1,59 +1,43 @@
-<!-- resources/views/water_quality_pdf.blade.php -->
 <!DOCTYPE html>
 <html>
 <head>
     <title>Water Quality Report</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            padding: 20px;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .report-table {
+        table {
             width: 100%;
             border-collapse: collapse;
         }
-        .report-table th, .report-table td {
-            border: 1px solid #dee2e6;
-            padding: 8px;
+        table, th, td {
+            border: 1px solid black;
         }
-        .report-table th {
-            background-color: #f8f9fa;
+        th, td {
+            padding: 8px;
+            text-align: left;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Water Quality Report</h1>
-        <table class="table table-bordered report-table">
-            <thead>
+    <h1>Water Quality Monitoring Report</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Temperature</th>
+                <th>Oxygen Level</th>
+                <th>Ammonia</th>
+                <th>Notification</th>
+                <th>Recorded At</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($waterQualities as $waterQuality)
                 <tr>
-                    <th>Parameter</th>
-                    <th>Value</th>
+                    <td>{{ $waterQuality->temperature }}</td>
+                    <td>{{ $waterQuality->oxygen_level }}</td>
+                    <td>{{ $waterQuality->ammonia }}</td>
+                    <td>{{ $waterQuality->notification }}</td>
+                    <td>{{ $waterQuality->created_at }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Temperature</td>
-                    <td>{{ $temperature }}</td>
-                </tr>
-                <tr>
-                    <td>Oxygen Level</td>
-                    <td>{{ $oxygen }}</td>
-                </tr>
-                <tr>
-                    <td>Ammonia</td>
-                    <td>{{ $ammonia }}</td>
-                </tr>
-                <tr>
-                    <td>Notification</td>
-                    <td>{{ $notification }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+            @endforeach
+        </tbody>
+    </table>
+</body

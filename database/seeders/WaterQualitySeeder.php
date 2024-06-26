@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\WaterQuality;
+use Illuminate\Support\Carbon;
 
 class WaterQualitySeeder extends Seeder
 {
@@ -13,32 +14,36 @@ class WaterQualitySeeder extends Seeder
      */
     public function run()
     {
-        // Sample data array
-        $data = [
-            [
-                'oxygen_level' => 7.5,
-                'temperature' => 25.2,
-                'ammonia' => 0.02,
-                'notification' => 'Normal levels',
-            ],
-            [
-                'oxygen_level' => 6.8,
-                'temperature' => 24.5,
-                'ammonia' => 0.05,
-                'notification' => 'Slightly elevated ammonia',
-            ],
-            [
-                'oxygen_level' => 8.0,
-                'temperature' => 26.0,
-                'ammonia' => 0.01,
-                'notification' => 'Optimal conditions',
-            ],
-            // Add more sample data as needed
-        ];
+        // Starting time
+        $startTime = Carbon::now()->subHours(1); // Start 1 hour ago
 
-        // Insert data into the database
-        foreach ($data as $item) {
-            WaterQuality::create($item);
+        // Generate data for every 10 minutes
+        for ($i = 0; $i < 6; $i++) {
+            $data = [
+                'oxygen_level' => $this->randomFloat(6.0, 8.5),
+                'temperature' => $this->randomFloat(24.0, 27.0),
+                'ammonia' => $this->randomFloat(0.01, 0.05),
+                'notification' => $this->getNotification(),
+                'created_at' => $startTime->copy()->addMinutes($i * 10)
+            ];
+            WaterQuality::create($data);
         }
+    }
+
+    private function randomFloat($min, $max)
+    {
+        return round($min + mt_rand() / mt_getrandmax() * ($max - $min), 2);
+    }
+
+    private function getNotification()
+    {
+        $notifications = [
+            'Normal levels',
+            'Slightly elevated ammonia',
+            'Optimal conditions',
+            'High oxygen level',
+            'Low oxygen level'
+        ];
+        return $notifications[array_rand($notifications)];
     }
 }

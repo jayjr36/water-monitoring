@@ -29,24 +29,21 @@ class WaterQualityController extends Controller
  
     public function index()
     {
-        $waterQualities = WaterQuality::latest()->get();
+        $waterQualities = WaterQuality::all();
 
         return view('water-quality', compact('waterQualities'));
     }
 
     public function downloadPDF()
     {
-        $waterQuality = WaterQuality::latest()->first(); // Get the latest entry
-
+        $waterQualities = WaterQuality::all(); // Fetch all records
+    
         $data = [
-            'temperature' => $waterQuality->temperature,
-            'oxygen' => $waterQuality->oxygen_level,
-            'ammonia' => $waterQuality->ammonia,
-            'notification' => $waterQuality->notification,
+            'waterQualities' => $waterQualities
         ];
-
-        $pdf = PDF::loadView('water_quality_pdf', $data);
-
+    
+        $pdf = PDF::loadView('water_qualty_pdf', $data);
+    
         return $pdf->download('water_quality_report.pdf');
     }
 
