@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\WaterQuality;
+use Illuminate\Support\Carbon;
 
 class WaterQualitySeeder extends Seeder
 {

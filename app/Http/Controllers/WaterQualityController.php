@@ -34,7 +34,7 @@ class WaterQualityController extends Controller
     
     public function index()
     {
-        $waterQualities = WaterQuality::latest()->get();
+        $waterQualities = WaterQuality::all();
 
         return view('water-quality', compact('waterQualities'));
     }
