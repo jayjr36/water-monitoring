@@ -11,22 +11,27 @@ class WaterQualityController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'temperature' => 'nullable',
-            'oxygen' => 'nullable',
-            'amonia' => 'nullable',
-            'notification' => 'notification'
+            'device_no' => 'nullable|string',
+            'ph' => 'nullable|numeric',
+            'ammonia' => 'nullable|numeric',
+            'turbidity' => 'nullable|numeric',
+            'temperature' => 'nullable|numeric',
+            'notification' => 'nullable|string'
         ]);
-
+    
         WaterQuality::create([
+            'device_no' => $data['device_no'],
+            'ph' => $data['ph'],
+            'ammonia' => $data['ammonia'],
+            'turbidity' => $data['turbidity'],
             'temperature' => $data['temperature'],
-            'oxygen_level' => $data['oxygen'],
-            'ammonia' => $data['amonia'],
-            'notification'=> $data['notification'],
+            'notification' => $data['notification']
         ]);
-
-        return response()->json(['message' => 'Data stored successfully']);
+    
+        return response()->json(['message' => 'success']);
     }
- 
+    
+    
     public function index()
     {
         $waterQualities = WaterQuality::latest()->get();
@@ -36,18 +41,20 @@ class WaterQualityController extends Controller
 
     public function downloadPDF()
     {
-        $waterQuality = WaterQuality::latest()->first(); // Get the latest entry
-
+        $waterQuality = WaterQuality::all();
         $data = [
-            'temperature' => $waterQuality->temperature,
-            'oxygen' => $waterQuality->oxygen_level,
-            'ammonia' => $waterQuality->ammonia,
-            'notification' => $waterQuality->notification,
+            'device_no' => $waterQuality->pluck('device_no')->toArray(),
+            'ph' => $waterQuality->pluck('ph')->toArray(),
+            'ammonia' => $waterQuality->pluck('ammonia')->toArray(),
+            'turbidity' => $waterQuality->pluck('turbidity')->toArray(),
+            'temperature' => $waterQuality->pluck('temperature')->toArray(),
+            'notification' => $waterQuality->pluck('notification')->toArray(),
         ];
-
+    
         $pdf = PDF::loadView('water_quality_pdf', $data);
-
+    
         return $pdf->download('water_quality_report.pdf');
     }
+    
 
 }

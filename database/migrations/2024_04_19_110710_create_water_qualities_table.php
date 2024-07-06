@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('water_qualities', function (Blueprint $table) {
             $table->id();
+            $table->string('device_no');
+            $table->decimal('ph', 5, 2)->nullable();
             $table->decimal('ammonia', 8, 2)->nullable();
-            $table->decimal('oxygen_level', 8, 2)->nullable();
+            $table->decimal('turbidity', 8, 2)->nullable();
             $table->decimal('temperature', 8, 2)->nullable();
             $table->string('notification')->nullable();
             $table->timestamps();
