@@ -8,6 +8,6 @@ use App\Http\Controllers\WaterQualityController;
 
 Route::post('/waterquality/update', [WaterQualityController::class, 'store']);
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
