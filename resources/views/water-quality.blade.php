@@ -43,15 +43,22 @@
 
                 <div class="row">
                     <div class="text-center py-5 font-bold fs-4">GRAPHS</div>
-                    <div class="col-md-4">
-                        <canvas id="phChart" width="400" height="400"></canvas>
+                    <div class="col-md-6">
+                        <canvas id="phChart" width="600" height="400"></canvas>
                     </div>
-                    <div class="col-md-4">
-                        <canvas id="temperatureChart" width="400" height="400"></canvas>
+                    <div class="col-md-6">
+                        <canvas id="temperatureChart" width="600" height="400"></canvas>
                     </div>
-                    <div class="col-md-4">
-                        <canvas id="ammoniaChart" width="400" height="400"></canvas>
+                       
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <canvas id="ammoniaChart" width="600" height="400"></canvas>
                     </div>
+                    <div class="col-md-6">
+                        <canvas id="turbidityChart" width="600" height="400"></canvas>
+                    </div>  
                 </div>
             </div>
             <div class="col-md-3">
@@ -74,79 +81,111 @@
     <!-- Load chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        var phLevels = {!! json_encode($waterQualities->pluck('ph')) !!};
-        var temperatures = {!! json_encode($waterQualities->pluck('temperature')) !!};
-        var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
-        var labels = {!! json_encode($waterQualities->pluck('created_at')) !!};
+     var rawLabels = {!! json_encode($waterQualities->pluck('created_at')) !!};
 
-        var ctxPh = document.getElementById('phChart').getContext('2d');
-        var phChart = new Chart(ctxPh, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'pH Level',
-                    data: phLevels,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+// Format the date strings
+var labels = rawLabels.map(function(dateString) {
+    var date = new Date(dateString);
+    return date.toLocaleDateString(); // You can adjust the locale and options as needed
+});
 
-        var ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
-        var temperatureChart = new Chart(ctxTemperature, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Temperature',
-                    data: temperatures,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
+var phLevels = {!! json_encode($waterQualities->pluck('ph')) !!};
+var temperatures = {!! json_encode($waterQualities->pluck('temperature')) !!};
+var ammonias = {!! json_encode($waterQualities->pluck('ammonia')) !!};
+var turbidityLevels = {!! json_encode($waterQualities->pluck('turbidity')) !!};
 
-        var ctxAmmonia = document.getElementById('ammoniaChart').getContext('2d');
-        var ammoniaChart = new Chart(ctxAmmonia, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Ammonia',
-                    data: ammonias,
-                    borderColor: 'rgba(255, 206, 86, 1)',
-                    borderWidth: 1,
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+var ctxPh = document.getElementById('phChart').getContext('2d');
+var phChart = new Chart(ctxPh, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'pH Level',
+            data: phLevels,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
                 }
-            }
-        });
+            }]
+        }
+    }
+});
+
+var ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
+var temperatureChart = new Chart(ctxTemperature, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Temperature',
+            data: temperatures,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+var ctxAmmonia = document.getElementById('ammoniaChart').getContext('2d');
+var ammoniaChart = new Chart(ctxAmmonia, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Ammonia',
+            data: ammonias,
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 1,
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
+var ctxTurbidity = document.getElementById('turbidityChart').getContext('2d');
+var turbidityChart = new Chart(ctxTurbidity, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Turbidity',
+            data: turbidityLevels,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+
     </script>
 </body>
 </html>

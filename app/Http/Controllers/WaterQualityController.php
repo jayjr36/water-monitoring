@@ -34,10 +34,12 @@ class WaterQualityController extends Controller
     
     public function index()
     {
-        $waterQualities = WaterQuality::all();
-
+        // Get the last 20 water quality records ordered by created_at
+        $waterQualities = WaterQuality::latest('created_at')->take(20)->get();
+    
         return view('water-quality', compact('waterQualities'));
     }
+    
 
     public function downloadPDF()
     {
