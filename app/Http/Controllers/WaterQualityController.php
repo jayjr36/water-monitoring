@@ -41,22 +41,18 @@ class WaterQualityController extends Controller
     }
     
 
-    public function downloadPDF()
-    {
-        $waterQuality = WaterQuality::all();
-        $data = [
-            'device_no' => $waterQuality->pluck('device_no')->toArray(),
-            'ph' => $waterQuality->pluck('ph')->toArray(),
-            'ammonia' => $waterQuality->pluck('ammonia')->toArray(),
-            'turbidity' => $waterQuality->pluck('turbidity')->toArray(),
-            'temperature' => $waterQuality->pluck('temperature')->toArray(),
-            'notification' => $waterQuality->pluck('notification')->toArray(),
-        ];
-    
-        $pdf = PDF::loadView('water_quality_pdf', $data);
-    
-        return $pdf->download('water_quality_report.pdf');
-    }
+  public function downloadPDF()
+{
+    // Fetch all water quality records
+    $waterQualities = WaterQuality::all();
+
+    // Pass the $waterQualities variable to the view
+    $pdf = PDF::loadView('water_qualty_pdf', compact('waterQualities'));
+
+    // Return the generated PDF
+    return $pdf->download('water_quality_report.pdf');
+}
+
     
 
 }
